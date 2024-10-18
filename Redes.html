@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <title>Aula de VPN!!</title>
+</head>
+
+<body>
+    <div id="home"></div>
+
+    <div class="navbar" id="navbar">
+        <a href="#home">Início</a>
+        <a target="_blank" href="https://github.com/GustavoRez">Serviços</a>
+        <a target="_blank" href="https://www.linkedin.com/in/gustavo-de-rezende-garcia-835001275/">Sobre</a>
+    </div>
+
+    <div class="sidebar">
+        <h3>Precisa de um atalho?</h3>
+        <p>Conexão WAN - DHCP - DNS</p>
+        <ul>
+            <li><a href="#primeiro">Instalação</a></li>
+            <li><a href="#segundo">Adicionando itens</a></li>
+            <li><a href="#terceiro">Roteadores</a></li>
+            <li><a href="#quarto">Servidores</a></li>
+            <li><a href="#quinto">Computadores</a></li>
+            <li><a href="#sexto">Réplica</a></li>
+            <li><a href="#setimo">Fornecendo DNS's</a></li>
+            <li><a href="#oitavo">Criando E-mail's</a></li>
+            <li><a href="#nono">Conexão r1/r2</a></li>
+        </ul>
+        <p>Conexão VPN</p>
+        <ul>
+            <li><a href="#primeiroVPN">Criação VPN</a></li>
+            <li><a href="#segundoVPN">Alterando IP serial</a></li>
+            <li><a href="#terceiroVPN">Alterando IP r3</a></li>
+            <li><a href="#quartoVPN">Alterando IP r1 e r2</a></li>
+            <li><a href="#quintoVPN">Ligando polos</a></li>
+        </ul>
+
+        <button id="leituraAvançada" class="leituraAvançada" onclick="alternarVisao()"></button>
+
+        <div id="audio" class="audio">
+            <audio id="meuAudio" src="imagens/audio_redes.mp3"></audio>
+
+            <div class="audio-controls">
+                <button id="playPauseBtn" onclick="pause()">&#9658;</button>
+
+                <div class="progress-container" onclick="setProgress(event)">
+                    <div id="progressBar" class="progress-bar"></div>
+                    <div class="time-info">
+                        <span id="currentTime">0:00</span> / <span id="durationTime">0:00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="velocidade-container">
+                <label>Velocidade:</label>
+                <input type="range" id="velocidade" value="1" min="0.5" max="2" step="0.1"
+                    oninput="alterarVelocidade(this.value)">
+                <span id="velocidadeLabel">1x</span>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="main-content">
+        <h1>Bem-vindo à aula de <u>REDES!</u></h1>
+        <p>
+            Hoje farei uma 'videoaula' ensinando a vocês como fazer uma VPN <small>espero que todos vocês já saibam
+                fazer…</small>.
+        </p>
+
+        <h2 class="subtitulos">Mas, afinal, o que é uma VPN?</h2>
+        <p>
+            A VPN (Virtual Private Network), em português Rede Privada Virtual, possibilita criar uma conexão mais
+            <strong>segura</strong> e <strong>criptografada</strong>, fazendo com que dispositivos conectados possam se
+            comunicar sem interferência de terceiros.
+        </p>
+        <p>
+            Para facilitar a compreensão, pense em uma VPN como um trem bala, porém esse trem bala é
+            particular e invisível. Ninguém consegue ver por onde você passa, e suas coisas (ou seja, seus dados) estão
+            bem guardadas e seguras dentro desse trem.
+        </p>
+
+        <div id="primeiro">
+            <hr>
+        </div>
+
+
+        <p class="subtitulos">Agora que já sabemos o que é uma VPN, vamos colocar a mão na massa e começar a
+            configuração!
+        </p>
+
+        <ol>
+            <li id="primeiro"><strong>Primeiro passo:</strong><br>
+                <p id="segundo">
+                    Abra o aplicativo <strong>Cisco Packet Tracer</strong> <a target="_blank"
+                        href="https://www.netacad.com/pt/cisco-packet-tracer">(caso não tenha use o site
+                        skillsforall para instalar)</a> e faça login usando sua conta.
+                </p>
+
+            <li><strong>Segundo passo:</strong><br>
+                <p>
+                    Coloque na área de trabalho:
+                <ul>
+                    <u>
+                        <li>Dois servidores <img src="imagens/server.png" alt="Servidor">
+                        <li>Um switch 2960 <img src="imagens/switch.png" alt="Switch 2960">
+                        <li>Um roteador ISR4321 <img src="imagens/router.png" alt="Roteador ISR4321">
+                        <li>Dois computadores <img src="imagens/pc.png" alt="Computador">
+                    </u>
+                </ul>
+                <p id="terceiro">A quantidade de pc's pode variar de acordo com a demanda.</p>
+            </li>
+            </p>
+
+            <li><strong>Terceiro passo:</strong><br>
+                <p>
+                    Antes de começar pra valer, coloque em seu roteador o módulo NIM-2T, isso disponibilizará portas
+                    seriais, e conecte todos seus hardwares com fios de cobre retos.<br>
+                    Para configuração do roteador, entre no CLI e insira os seguintes códigos:
+                <div class="codigos">
+                    <code>Router>enable</code><br>
+                    <code>Router#config t</code>
+                </div>
+                <ul class="codigosExplica">
+                    <li><code>enable</code> (ativa a CLI)</li>
+                    <li><code>config t</code> (acessa o terminal de configurações)</li>
+                </ul>
+                <div class="codigos">
+                    <code>Router(config)#interface gig0/0/0</code><br>
+                    <code>Router(config-if)#ip address 192.168.1.1 255.255.255.0</code><br>
+                    <code>Router(config-if)#no shut</code><br>
+                    <code>Router(config-if)#exit</code>
+                </div>
+                <ul class="codigosExplica">
+                    <li><code>interface gig0/0/0</code> (acessa as configurações da porta onde está conectada ao switch)
+                    </li>
+                    <li><code>ip address 192.168.1.1 255.255.255.0</code> (define endereço de IP e Máscara sub-rede)
+                    </li>
+                    <li><code>no shut</code> (Ativa a porta GigabitEthernet0/0/0)</li>
+                    <li><code>exit</code> (sai das configurações da porta onde seu switch está conectado)</li>
+                </ul>
+                <div class="codigos">
+                    <code>Router(config)#interface ser0/1/0</code><br>
+                    <code>Router(config-if)#ip address 221.10.0.1 255.255.255.0</code><br>
+                    <code>Router(config-if)#no shut</code><br>
+                    <code>Router(config-if)#exit</code>
+                </div>
+                <ul class="codigosExplica">
+                    <li><code>interface ser0/1/0</code> (acessa as configurações da porta serial)</li>
+                    <li><code>ip address 221.10.0.1 255.255.255.0</code></li>
+                    <li><code>no shut</code> (Ativa a porta serial)</li>
+                    <li><code>exit</code></li>
+                </ul>
+                <div class="codigos">
+                    <code>Router(config)#router rip</code><br>
+                    <code>Router(config-if)#network 192.168.1.0</code><br>
+                    <code>Router(config-if)#network 221.10.0.0</code><br>
+                    <code>Router(config-if)#exit</code>
+                </div>
+                <ul class="codigosExplica">
+                    <li><code>router rip</code> (acessa as configurações do RIP)</li>
+                    <li><code>network 192.168.1.0</code></li>
+                    <li><code>network 221.10.0.0</code> (cria duas conexões que serão usadas posteriormente)</li>
+                    <li><code>exit</code></li>
+                </ul>
+            </li>
+
+            <div class="codigos">
+                <code>Router#copy run start</code>
+            </div>
+            <ul class="codigosExplica" id="quarto">
+                <li><code>copy run start</code> (define as configurações atuais como padrão).
+            </ul>
+
+            Pronto, agora com o roteador 100% configurado, vamos para o próximo passo.
+            </p>
+
+            <li><strong>Quarto passo:</strong><br>
+                <p>
+                    Vamos configurar os servidores. Configure ele com:
+                <ul>
+                    <li><strong>Endereço IP:</strong> 192.168.1.10
+                    <li><strong>Default Gateway:</strong> 192.168.1.1
+                    <li><strong>Servidor DNS:</strong> 192.168.1.10</li>
+                </ul>
+                Na aba de Serviços, configure o DHCP com:
+                <ul>
+                    <li><strong>Default Gateway:</strong> 192.168.1.1;
+                    <li><strong>Servidor DNS:</strong> 192.168.1.10;
+                    <li><strong>Endereço IP inicial:</strong> 192.168.1.100;
+                    <li><strong>Máscara sub-rede:</strong> 255.255.255.0;
+                </ul>
+                E salve essas configurações.
+                <p>Configure o DNS, crie um domínio com seu nome e use o mesmo endereço de IP do seu servidor.</p>
+                <p>Configure o EMAIL, usando o mesmo domínio criado previamente, crie pelo menos dois usuários.</p>
+                <p id="quinto">No outro servidor faça o mesmo porém com nomes diferentes.</p>
+                </p>
+
+            <li><strong>Quinto passo:</strong><br>
+                <p>
+                <p>Agora passando para os computadores.</p>
+                Na aba de configurações, altere as configurações globais de Gateway/DNS IPv4 para DHCP.
+                <p>
+                    Isso fará com que seu computador automaticamente pegue as informações que você configurou em seu
+                    servidor.<br id="sexto">
+                    Caso ele pegue algum número diferente repita os passos anteriores e confirme se todas as portas em
+                    uso estão ligadas.
+                </p>
+                </p>
+
+            <li><strong>Sexto passo:</strong><br>
+                Agora, copie e cole todos os componentes que criou, alterando apenas:
+                <ul>
+                    <strong>Roteador</strong>
+                    <li>IP porta gig0/0/0 para <strong>192.168.2.1 255.255.255.0</strong>
+                    <li>IP porta ser0/1/0 para <strong>22.10.0.2 255.255.255.0</strong>
+                    <li>Conexão RIP <s>192.168.1.0</s> para <strong>192.168.2.0</strong>
+                </ul>
+                <ul>
+                    <strong>Servidor</strong>
+                    <li>Endereço IP para <strong>192.168.2.10</strong>
+                    <li>Default Gateway para <strong>192.168.2.1</strong>
+                    <li>Servidor DNS para <strong>192.168.2.10</strong>
+                </ul>
+                <ul>
+                    <strong>Nos serviços do servidor</strong>
+                    <li>Default Gateway para <strong>192.168.2.1</strong>
+                    <li id="setimo">Servidor DNS para <strong>192.168.2.10</strong>
+                    <li>Endereço IP inicial para <strong>192.168.2.100</strong>
+                </ul>
+
+            <li><strong>Sétimo passo:</strong><br>
+                <p>
+                    Ainda na aba de serviços dos seus servidores, adicione ao DNS os domínios criados nos outro
+                    servidores.
+                </p>
+                <p>
+                    Por exemplo, no meu servidor 1 fiz um domínio nomeado '<u>gustavo1.com</u>' com endereço IP
+                    '<strong id="oitavo">192.168.1.10</strong>'. Então nos servidores 2, 3 e 4 devo adicionar um domínio com esse
+                    mesmo nome e esse mesmo IP.
+                </p>
+
+            <li><strong>Oitavo passo:</strong><br>
+                <p>
+                    No seu computador, entre na aba Desktop e procure por Email. Crie um email e use, ao invés do
+                    @gmail.com, o seu domínio criado no quarto passo (use o domínio do servidor respectivo a leva).
+                </p>
+                <p>
+                    Ao cadastrar o e-mail, será pedido informações do servidor, os dois espaços em branco deverão ser
+                    preenchidos com o nome do seu domínio.
+                    A informação de logon deve ser preenchida com o usuário e senha feitos, também, no <a
+                        href="#quarto">quarto passo</a>.
+                </p>
+                <p id="nono">
+                    Repita esse processo em seus outros computadores, mantendo o nome de domínio do servidor próprio
+                    porém com nomes de email diferentes.
+                </p>
+
+            <li><strong>Nono passo:</strong><br>
+                <p>Usando um cabo serial DCE, conecte o roteador 1 ao roteador 2.</p>
+                <p>
+                    Se tudo deu certo, sua conexão WAN está feita!
+                </p>
+                <p>
+                    Para testar use o prompt de comando de um computador da leva feita a mão e digite:<br>
+                    <code>ping + endereço de IP</code> de um dos computadores da leva feita com copia e cola.
+                    No meu caso, digitei: <strong>ping 192.168.2.106</strong>
+                </p>
+                <p id="primeiroVPN">
+                    Outra maneira de testar é entrando em algum computador e digitando em seu navegador de internet o
+                    endereço IP designado ao site da outra leva. No meu caso entrei na leva feita a mão e inseri:
+                    <strong>192.168.2.10</strong>
+                </p>
+        </ol>
+        <p class="subtitulos">Agora vamos para a parte da VPN!</p>
+        <ol>
+            <li><strong>Primeiro passo para instalar a VPN:</strong>
+                <p id="segundoVPN">
+                    Adicione mais um roteador ISR4321. E para evitar confusões vamos nomeá-los. O primeiro roteador
+                    criado vai ser o <u>r1</u>, o segundo vai ser o <u>r2</u> e este será o <u>r3</u>.
+                </p>
+                <p>Não esqueça de adicionar o módulo NIM-2T ao r3!</p>
+
+            <li><strong>Segundo passo:</strong><br>
+                <p>
+                    Será necessário alterar o endereço IP da porta serial do r2.<br>
+                    Mova esse IP para porta serial 0/1/0 do r3 e mova o cabo DCE do r2 para o r3.
+                </p>
+                <p>
+                    No r2, redirecione o IP da porta serial para <strong>2.0.0.2</strong>, da mesma maneira que foi
+                    feito no <a  id="terceiroVPN" href="#terceiro">terceiro passo</a> mas apenas alterando a porta
+                    <strong>ser0/1/0</strong>.
+                </p>
+                <p>Não esqueça de trocar o RIP de <s>221.10.0.0</s> para <strong>2.0.0.0</strong>.</p>
+
+            <li><strong>Terceiro Passo:</strong><br>
+                <p>No r3, adicionaremos mais um endereço de IP. No CLI insira:</p>
+                <div class="codigos">
+                    <code>Router3>enable</code><br>
+                    <code>Router3#config t</code>
+                </div>
+                <div class="codigos">
+                    <code>Router3(config)#interface ser0/1/1</code><br>
+                    <code>Router3(config-if)#ip address 2.0.0.1 255.0.0.0</code><br>
+                    <code id="quartoVPN">Router3(config-if)#no shut</code>
+                </div>
+                <p>Teste a conexão novamente, das mesmas maneiras do <a href="#nono">nono passo</a>.</p>
+
+            <li><strong>Quarto passo:</strong><br>
+                <p>Agora criaremos o túnel, ou trilho para o trem bala.</p>
+                <p>No r1 acesse CLI e digite:</p>
+                <div class="codigos">
+                    <code>Router1>enable</code><br>
+                    <code>Router1#config t</code>
+                </div>
+                <div class="codigos">
+                    <code>Router1(config)#interface tunnel 10</code><br>
+                    <code>Router1(config-if)#ip address 172.16.1.1 255.255.0.0</code><br>
+                    <code>Router1(config-if)#tunnel source ser0/1/0</code><br>
+                    <code>Router1(config-if)#tunnel destination 2.0.0.2</code><br>
+                    <code>Router1(config-if)#no shut</code>
+                </div>
+                <p>E no r2 faremos o mesmo mas alterando uns detalhes:</p>
+                <div class="codigos">
+                    <code>Router2>enable</code><br>
+                    <code>Router2#config t</code>
+                </div>
+                <div class="codigos">
+                    <code>Router2(config)#interface tunnel 100</code><br>
+                    <code>Router2(config-if)#ip address 172.16.1.2 255.255.0.0</code><br>
+                    <code>Router2(config-if)#tunnel source ser0/1/0</code><br>
+                    <code>Router2(config-if)#tunnel destination 221.10.0.1</code><br>
+                    <code>Router2(config-if)#no shut</code>
+                </div>
+                <p id="quintoVPN">
+                    Caso queira testar novamente basta digitar <u>ping e o ip do tunnel</u>.<br>
+                    No r1 por exemplo: <strong>ping 172.16.1.2</strong>
+                </p>
+            <li><strong>Quinto passo:</strong><br>
+                <p>Por fim faremos uma rota ligando os polos.</p>
+                <p>No r1:</p>
+                <div class="codigos">
+                    <code>Router1>enable</code><br>
+                    <code>Router1#config t</code><br>
+                    <code>Router1(config)#ip route 192.168.2.0 255.255.255.0 172.16.1.2</code>
+                </div>
+                <p>No r3:</p>
+                <div class="codigos">
+                    <code>Router3>enable</code><br>
+                    <code>Router3#config t</code><br>
+                    <code>Router3(config)#ip route 192.168.1.0 255.255.255.0 172.16.1.1</code>
+                </div>
+        </ol>
+        <h3 class="centro subtitulos">Pronto! Agora você têm dois sistemas conectados via Wireless com VPN.</h3>
+        <hr>
+        <p class="centro">Caso tenham alguma dúvida, agora é a hora!</p>
+    </div>
+
+    <p class="fim">&copy;2024 Gustavo Rezende. Todos direitos reservados.</p>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
